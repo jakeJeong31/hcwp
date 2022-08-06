@@ -5,6 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var app = express();
+var cors = require('cors'); // 자신이 속하지 않은 도메인에 리소스 요청 허용 (특정 도메인만 허용하려면 option 사용해야함)
 
 // DB setting
 /*
@@ -21,12 +22,14 @@ db.on('error', function(err){
 // Other settings
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname+'/public'));
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
+app.use(cors());
 
 // Routes
-app.use('/', require('./routes/home'));
+app.use('/', require('./routes/home'))
 
 // Port setting
 var port = 3000;

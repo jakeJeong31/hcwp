@@ -5,15 +5,43 @@
   <head>
     <%- include('../partials/head') %>
   </head>
+  <script>
+
+    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
+    function ajaxCallBtn(){
+    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
+      // url 및 전송 parameter
+      var url = "http://127.0.0.1:3000/ajax_call_api";
+      var data = {'email' : 'cheerjake@gmail.com'}; // {'email' : data}
+      data = JSON.stringify(data);
+
+      // request 셋팅
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST',url);
+      xhr.setRequestHeader('Content-Type', "application/json");
+      xhr.send(data);
+
+      // ajax 호출 리턴 후
+      xhr.addEventListener('load', function(){
+        var result = JSON.parse(xhr.responseText);
+        //console.log("result:"+result+", _eventsCount:"+result._eventsCount);
+        if(result != null){
+          document.querySelector("#showResult").innerHTML = result._eventsCount;
+        } else {
+          alert("API CALL FAIL..");
+        }
+      });
+    }
+  </script>
   <body>
     <%- include('../partials/nav') %>
 
     <div class="container mb-3">
-
       <h2 class="mb-3">Nomad</h2>
-
       <P>Nomad의 API</p>
-      
+
+      <input type="button" id="nmdVerChkBtn" onclick="ajaxCallBtn()" width="100px" value="노마드버전" />
+      <div id="showResult"></div>
     </div>
   </body>
 </html>
