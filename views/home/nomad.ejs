@@ -8,11 +8,11 @@
   <script>
 
     // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
-    function ajaxCallBtn(){
+    function ajaxCallBtn(api_flag){
     //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
       // url 및 전송 parameter
       var url = "http://127.0.0.1:3000/ajax_call_api";
-      var data = {'email' : 'cheerjake@gmail.com'}; // {'email' : data}
+      var data = {'api_flag' : api_flag}; // {'email' : data}
       data = JSON.stringify(data);
 
       // request 셋팅
@@ -26,7 +26,10 @@
         var result = JSON.parse(xhr.responseText);
         //console.log("result:"+result+", _eventsCount:"+result._eventsCount);
         if(result != null){
-          document.querySelector("#showResult").innerHTML = result._eventsCount;
+          //document.querySelector("#showResult").innerHTML = result._eventsCount;
+          document.querySelector("#showResult").innerHTML = "";
+          document.querySelector("#showResult").innerHTML = JSON.stringify(result);
+          //document.querySelector("#showResult").innerHTML = JSON.stringify(result.pid);
         } else {
           alert("API CALL FAIL..");
         }
@@ -40,7 +43,10 @@
       <h2 class="mb-3">Nomad</h2>
       <P>Nomad의 API</p>
 
-      <input type="button" id="nmdVerChkBtn" onclick="ajaxCallBtn()" width="100px" value="노마드버전" />
+      <input type="button" id="nmdAgtSvrPtchInfo" onclick="ajaxCallBtn('nmdAgtSvrPtchInfo')" width="100px" value="서버패치정보" />
+      <input type="button" id="nmdAgtClntPtchInfo" onclick="ajaxCallBtn('nmdAgtClntPtchInfo')" width="100px" value="클라이언트패치정보" />
+      <input type="button" id="nmdVerChkBtn" onclick="ajaxCallBtn('nmdVerChkBtn')" width="100px" value="표준어플리케이션배포?" />
+
       <div id="showResult"></div>
     </div>
   </body>

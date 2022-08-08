@@ -28,8 +28,27 @@ router.get('/nomad', function(req, res){
 // POST 방식을 통한 self domain ajaxCall (for bash command)
 router.post('/ajax_call_api', function(req, res){
   console.log(req.body);  // param
-  var rData = exec('curl http://192.168.50.235:4646/v1/jobs');
-  res.json(rData);
+  var api_flag = req.body.api_flag;
+  var rData = "";
+  if(api_flag=="nmdVerChkBtn"){
+    api_addr = "curl http://192.168.50.235:4646/v1/jobs";
+  } else if (api_flag=='nmdAgtSvrPtchInfo') {
+    api_addr = "curl http://192.168.50.235:4646/v1/node/4db6c2d8-4849-ea9f-abb1-571ea1b86050";
+  } else if (api_flag=='nmdAgtClntPtchInfo') {
+    api_addr = "curl http://192.168.50.235:4646/v1/node/b3d7055c-0ddc-3b77-1c63-6909c217f2d2";
+  } else {
+    console.log("api_flag is null");
+  }
+
+  rData = exec(api_addr, function (error, stdout, stderr){
+    console.log('stdout: '+stdout);
+    console.log('stderr: '+stderr);
+    if(error != null){
+      console.log('exec error: '+error);
+    }
+    res.json(stdout);
+  });
+
 });
 
 module.exports = router;

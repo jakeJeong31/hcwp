@@ -5,6 +5,39 @@
   <head>
     <%- include('../partials/head') %>
   </head>
+  <script>
+  function validationCheck(){
+
+    if($("#obj_addr").val()==""){
+      alert("접속대상 IP를 입력해주세요.");
+      $("#obj_addr").focus();
+      return false;
+    }
+    if($("#role_id").val()==""){
+      alert("역할 ID를 입력해주세요.");
+      $("#role_id").focus();
+      return false;
+    }
+    if($("#secret_id").val()==""){
+      alert("시크릿 ID를 입력해주세요.");
+      $("#secret_id").focus();
+      return false;
+    }
+    return true;
+  }
+
+  function vaultAccess(){
+
+    if(validationCheck()){
+      var vaultRequestInfo = "";
+      vaultRequestInfo += "접속대상:"+$("#obj_addr").val()+":8200\n";
+      vaultRequestInfo += "역할 ID:"+$("#role_id").val()+"\n";
+      vaultRequestInfo += "시크릿 ID:"+$("#secret_id").val()+"\n";
+      alert("* Vault 접속요청 정보\n"+vaultRequestInfo);
+    }
+  }
+
+  </script>
   <body>
     <%- include('../partials/nav') %>
 
@@ -14,6 +47,59 @@
 
       <P>Vault의 API</p>
 
+      <div>
+        <table id="vTableAccessValue" border="1" class="table">
+          <thead>
+            <tr>
+              <th>Vault 접속정보</th>
+              <th>사용자 입력값</th>
+              <th>설명</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>접속대상</td>
+              <td><input type="text" id="obj_addr" name="obj_addr" size="20" style="width:100%;" /></td>
+              <td>IP주소만입력(예:127.0.0.1)</td>
+            </tr>
+            <tr>
+              <td>역할 ID</td>
+              <td><input type="text" id="role_id" name="role_id" size="20" style="width:100%;" /></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>시크릿 ID</td>
+              <td><input type="text" id="secret_id" name="secret_id" size="20" style="width:100%;" /></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div>
+          <li>Vault 접속정보</li>
+          <input type="button" class="float-right" onclick="vaultAccess()" value="Vault 접속" />
+        </div>
+        <table id="vTableAccessInfo" border="1" class="table">
+          <thead>
+            <tr>
+              <th>Key Name</th>
+              <th>Key Value</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Client_token</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Token_policies</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Lease_duration</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </body>
 </html>
