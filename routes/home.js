@@ -30,7 +30,11 @@ router.post('/ajax_call_api', function(req, res){
   console.log(req.body);  // param
   var api_flag = req.body.api_flag;
   var rData = "";
-  if(api_flag=="nmdVerChkBtn"){
+  if(api_flag=="cslSrvcSttsInfo"){
+    api_addr = "curl http://192.168.50.248:8500/v1/catalog/node/SbisLinux-Consul2/health-checks";
+  } else if(api_flag=="cslSrvcNmInfo"){
+    api_addr = "curl http://192.168.50.248:8500/v1/catalog/node/SbisLinux-Consul2";
+  } else if(api_flag=="nmdVerChkBtn"){
     api_addr = "curl http://192.168.50.235:4646/v1/jobs";
   } else if (api_flag=='nmdAgtSvrPtchInfo') {
     api_addr = "curl http://192.168.50.235:4646/v1/node/4db6c2d8-4849-ea9f-abb1-571ea1b86050";
