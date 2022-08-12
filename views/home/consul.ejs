@@ -23,12 +23,33 @@
 
       // ajax 호출 리턴 후
       xhr.addEventListener('load', function(){
+        console.log("xhr.responseText:"+xhr.responseText);
+
+        const result1 = JSON.parse(xhr.responseText);
+        console.log("result1:"+result1.rData);;
+
         var result = JSON.parse(xhr.responseText);
+        console.log("result:"+JSON.stringify(result.rData.Node));
+        for(var i=0;i<5;i++){
+          //console.log(result[i]);
+        }
+
         //console.log("result:"+result+", _eventsCount:"+result._eventsCount);
         if(result != null){
           //document.querySelector("#showResult").innerHTML = result._eventsCount;
-          document.querySelector("#showResult").innerHTML = "";
-          document.querySelector("#showResult").innerHTML = JSON.stringify(result);
+          if(api_flag=='cslSrvcSttsInfo'){
+            document.querySelector("#showResult").innerHTML = JSON.stringify(result);
+            //document.querySelector("#showResult").innerHTML = result[0].Name;
+          } else if (api_flag=='cslSrvcNmInfo'){
+            var strResult = "";
+            strResult += "consul ID : "+JSON.stringify(result.rData.Services.consul.ID)+"<br>";
+            strResult += "consul Service : "+JSON.stringify(result.rData.Services.consul.Service);
+            document.querySelector("#showResult").innerHTML = strResult;
+          } else {
+            document.querySelector("#showResult").innerHTML = "";
+            document.querySelector("#showResult").innerHTML = JSON.stringify(result.rData);
+          }
+
           //document.querySelector("#showResult").innerHTML = JSON.stringify(result.pid);
         } else {
           alert("API CALL FAIL..");
@@ -49,7 +70,6 @@
       <input type="button" id="cslSrvcNmInfo" onclick="ajaxCallBtn('cslSrvcNmInfo')" width="100px" value="서비스이름조회" />
 
       <div id="showResult"></div>
-      
     </div>
   </body>
 </html>

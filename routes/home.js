@@ -16,7 +16,7 @@ router.get('/terraform', function(req, res){
   res.render('home/terraform');
 });
 router.get('/consul', function(req, res){
-  exec('curl http://192.168.50.248:8500/v1/health/service/consul',(err,stdout,stderr) => console.log(stdout));
+  //exec('curl http://192.168.50.248:8500/v1/health/service/consul',(err,stdout,stderr) => console.log(stdout));
   res.render('home/consul');
 });
 router.get('/vault', function(req, res){
@@ -31,7 +31,7 @@ router.post('/ajax_call_api', function(req, res){
   var api_flag = req.body.api_flag;
   var rData = "";
   if(api_flag=="cslSrvcSttsInfo"){
-    api_addr = "curl http://192.168.50.248:8500/v1/catalog/node/SbisLinux-Consul2/health-checks";
+    api_addr = "curl http://192.168.50.248:8500/v1/health/node/SbisLinux-Consul2";
   } else if(api_flag=="cslSrvcNmInfo"){
     api_addr = "curl http://192.168.50.248:8500/v1/catalog/node/SbisLinux-Consul2";
   } else if(api_flag=="nmdVerChkBtn"){
@@ -50,7 +50,8 @@ router.post('/ajax_call_api', function(req, res){
     if(error != null){
       console.log('exec error: '+error);
     }
-    res.json(stdout);
+    var obj = JSON.parse(stdout);
+    res.json({rData:obj});
   });
 
 });
