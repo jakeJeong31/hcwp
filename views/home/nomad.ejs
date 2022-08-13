@@ -23,13 +23,36 @@
 
       // ajax 호출 리턴 후
       xhr.addEventListener('load', function(){
+
         var result = JSON.parse(xhr.responseText);
-        //console.log("result:"+result+", _eventsCount:"+result._eventsCount);
-        if(result != null){
-          //document.querySelector("#showResult").innerHTML = result._eventsCount;
-          document.querySelector("#showResult").innerHTML = "";
-          document.querySelector("#showResult").innerHTML = JSON.stringify(result);
-          //document.querySelector("#showResult").innerHTML = JSON.stringify(result.pid);
+        var strResult = "";
+        console.log("result:"+JSON.stringify(result));
+
+        if(result != null){ // 이거 수정해야함 result.rData 체크하는 걸로 -> home.js에서는 리턴값이 있을 때만 넘기는걸로
+
+          if(api_flag=='nmdAgtSvrPtchInfo'){
+            // 서버패치조회
+            strResult += "driver.docker.os_type : "+JSON.stringify(result.rData.Attributes["driver.docker.os_type"])+"<br>";
+            strResult += "os.name : "+JSON.stringify(result.rData.Attributes["os.name"])+"<br>";
+            strResult += "os.version : "+JSON.stringify(result.rData.Attributes["os.version"])+"<br>";
+
+          } else if(api_flag=='nmdJobNmInfo'){
+            // 잡네임
+            strResult += "Region : "+JSON.stringify(result.rData.Region)+"<br>";
+            strResult += "Namespace : "+JSON.stringify(result.rData.Namespace)+"<br>";
+            strResult += "ID : "+JSON.stringify(result.rData.ID)+"<br>";
+            strResult += "ParentID : "+JSON.stringify(result.rData.ParentID)+"<br>";
+            strResult += "Name : "+JSON.stringify(result.rData.Name)+"<br>";
+            strResult += "Type : "+JSON.stringify(result.rData.Type)+"<br>";
+
+          } else {
+
+            document.querySelector("#showResult").innerHTML = "";
+            document.querySelector("#showResult").innerHTML = JSON.stringify(result.rData);
+          }
+
+          document.querySelector("#showResult").innerHTML = strResult;
+
         } else {
           alert("API CALL FAIL..");
         }
@@ -38,17 +61,12 @@
   </script>
   <body>
     <%- include('../partials/nav') %>
-
     <div class="container mb-3">
       <h2 class="mb-3">Nomad</h2>
       <P>Nomad의 API</p>
-
       <input type="button" id="nmdAgtSvrPtchInfo" onclick="ajaxCallBtn('nmdAgtSvrPtchInfo')" width="100px" value="서버패치정보" />
-      <input type="button" id="nmdAgtClntPtchInfo" onclick="ajaxCallBtn('nmdAgtClntPtchInfo')" width="100px" value="클라이언트패치정보" />
-      <input type="button" id="nmdVerChkBtn" onclick="ajaxCallBtn('nmdVerChkBtn')" width="100px" value="표준어플리케이션배포?" />
-
+      <input type="button" id="nmdJobNmInfo" onclick="ajaxCallBtn('nmdJobNmInfo')" width="100px" value="잡네임" />
       <div id="showResult"></div>
-      
     </div>
   </body>
 </html>

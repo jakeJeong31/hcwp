@@ -23,34 +23,41 @@
 
       // ajax 호출 리턴 후
       xhr.addEventListener('load', function(){
-        console.log("xhr.responseText:"+xhr.responseText);
-
-        const result1 = JSON.parse(xhr.responseText);
-        console.log("result1:"+result1.rData);;
 
         var result = JSON.parse(xhr.responseText);
-        console.log("result:"+JSON.stringify(result.rData.Node));
-        for(var i=0;i<5;i++){
-          //console.log(result[i]);
-        }
+        var strResult = "";
+        console.log("result:"+JSON.stringify(result));
 
-        //console.log("result:"+result+", _eventsCount:"+result._eventsCount);
         if(result != null){
-          //document.querySelector("#showResult").innerHTML = result._eventsCount;
+
           if(api_flag=='cslSrvcSttsInfo'){
-            document.querySelector("#showResult").innerHTML = JSON.stringify(result);
-            //document.querySelector("#showResult").innerHTML = result[0].Name;
+            // 서비스상태조회_1
+            strResult += "Name : "+JSON.stringify(result.rData[0].Name)+"<br>";
+            strResult += "Status : "+JSON.stringify(result.rData[0].Status)+"<br>";
+            strResult += "Notes : "+JSON.stringify(result.rData[0].Notes)+"<br>";
+            strResult += "Output : "+JSON.stringify(result.rData[0].Output)+"<br>";
+
+          } else if(api_flag=='cslSrvcSttsInfo_2nd'){
+            // 서비스상태조회_2
+            for(var i=0;i<result.rData.length;i++){
+              strResult += "Node : "+JSON.stringify(result.rData[i].Node)+"<br>";
+              strResult += "Status : "+JSON.stringify(result.rData[i].Status)+"<br>";
+              strResult += "Notes : "+JSON.stringify(result.rData[0].Notes)+"<br>";
+              strResult += "Output : "+JSON.stringify(result.rData[0].Output)+"<br><br>";
+            }
+
           } else if (api_flag=='cslSrvcNmInfo'){
-            var strResult = "";
+            // 서비스이름조회
             strResult += "consul ID : "+JSON.stringify(result.rData.Services.consul.ID)+"<br>";
-            strResult += "consul Service : "+JSON.stringify(result.rData.Services.consul.Service);
-            document.querySelector("#showResult").innerHTML = strResult;
+            strResult += "consul Service : "+JSON.stringify(result.rData.Services.consul.Service)+"<br>";
           } else {
+
             document.querySelector("#showResult").innerHTML = "";
             document.querySelector("#showResult").innerHTML = JSON.stringify(result.rData);
           }
 
-          //document.querySelector("#showResult").innerHTML = JSON.stringify(result.pid);
+          document.querySelector("#showResult").innerHTML = strResult;
+
         } else {
           alert("API CALL FAIL..");
         }
@@ -59,16 +66,13 @@
   </script>
   <body>
     <%- include('../partials/nav') %>
-
     <div class="container mb-3">
-
       <h2 class="mb-3">Consul</h2>
-
       <P>Consul의 API</p>
-
-      <input type="button" id="cslSrvcSttsInfo" onclick="ajaxCallBtn('cslSrvcSttsInfo')" width="100px" value="서비스상태조회" />
+      <input type="button" id="cslSrvcSttsInfo" onclick="ajaxCallBtn('cslSrvcSttsInfo')" width="100px" value="서비스상태조회_1" />
+      <input type="button" id="cslSrvcSttsInfo" onclick="ajaxCallBtn('cslSrvcSttsInfo_2nd')" width="100px" value="서비스상태조회_2" />
       <input type="button" id="cslSrvcNmInfo" onclick="ajaxCallBtn('cslSrvcNmInfo')" width="100px" value="서비스이름조회" />
-
+      <br>
       <div id="showResult"></div>
     </div>
   </body>
