@@ -7,11 +7,12 @@
   </head>
   <script>
 
+    const ip_addr = "<%= locals.ip_addr %>";
     // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
     function ajaxCallBtn(api_flag){
     //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
       // url 및 전송 parameter
-      var url = "http://127.0.0.1:3000/ajax_call_api";
+      var url = "http://"+ip_addr+":3000/ajax_call_api";
       var data = {'api_flag' : api_flag}; // {'email' : data}
       data = JSON.stringify(data);
 
