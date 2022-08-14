@@ -31,11 +31,11 @@ router.post('/ajax_call_api', function(req, res){
   var api_exec = "";
 
   if(api_flag=="cslSrvcSttsInfo"){ // consul
-    api_addr = "curl -s http://192.168.50.248:8500/v1/health/node/SbisLinux-Consul2";
+    api_addr = "curl -s http://3.35.89.134:8500/v1/health/node/ip-172-31-46-237.ap-northeast-2.compute.internal";
   } else if (api_flag=="cslSrvcSttsInfo_2nd"){
-    api_addr = "curl -s http://192.168.50.248:8500/v1/health/state/passing";
+    api_addr = "curl -s http://3.35.89.134:8500/v1/health/state/passing";
   } else if (api_flag=="cslSrvcNmInfo"){
-    api_addr = "curl -s http://192.168.50.248:8500/v1/catalog/node/SbisLinux-Consul2";
+    api_addr = "curl -s http://3.35.89.134:8500/v1/catalog/node/ip-172-31-46-237.ap-northeast-2.compute.internal";
   } else if (api_flag=='nmdAgtSvrPtchInfo') { // nomad
     api_addr = "curl -s http://192.168.50.235:4646/v1/node/4db6c2d8-4849-ea9f-abb1-571ea1b86050";
   } else if (api_flag=='nmdJobNmInfo') {
