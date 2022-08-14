@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var exec = require("child_process").exec;
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 
 // Home
 router.get('/', function(req, res){
