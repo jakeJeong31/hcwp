@@ -11,7 +11,7 @@
     function ajaxCallBtn(api_flag){
     //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
       // url 및 전송 parameter
-      var url = "http://127.0.0.1:3000/ajax_call_api";
+      var url = "/ajax_call_api";
       var data = {'api_flag' : api_flag}; // {'email' : data}
       data = JSON.stringify(data);
 
@@ -32,7 +32,7 @@
 
           if(api_flag=='nmdAgtSvrPtchInfo'){
             // 서버패치조회
-            strResult += "driver.docker.os_type : "+JSON.stringify(result.rData.Attributes["driver.docker.os_type"])+"<br>";
+            strResult += "kernel.name : "+JSON.stringify(result.rData.Attributes["kernel.name"])+"<br>";
             strResult += "os.name : "+JSON.stringify(result.rData.Attributes["os.name"])+"<br>";
             strResult += "os.version : "+JSON.stringify(result.rData.Attributes["os.version"])+"<br>";
 

@@ -37,9 +37,9 @@ router.post('/ajax_call_api', function(req, res){
   } else if (api_flag=="cslSrvcNmInfo"){
     api_addr = "curl -s http://3.35.89.134:8500/v1/catalog/node/ip-172-31-46-237.ap-northeast-2.compute.internal";
   } else if (api_flag=='nmdAgtSvrPtchInfo') { // nomad
-    api_addr = "curl -s http://192.168.50.235:4646/v1/node/4db6c2d8-4849-ea9f-abb1-571ea1b86050";
+    api_addr = "curl -s http://43.200.133.246:4646/v1/node/b0e64782-9fb1-adcc-2938-dd9c3355168a";
   } else if (api_flag=='nmdJobNmInfo') {
-    api_addr = "curl -s http://192.168.50.235:4646/v1/job/example";
+    api_addr = "curl -s http://43.200.133.246:4646/v1/job/example";
   } else if (api_flag=='trrfrmRun') {
     api_addr = "curl -s 'Authorization: Bearer $TEAM_TOKEN' https://app.terraform.io/api/v2/runs/run-UQJ55vGbhnhdyzXg";
   } else if (api_flag=='trrfrmWorkspace') {
