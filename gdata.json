@@ -1,8 +1,40 @@
 {
     "Auth":"jjw",
     "Corp":"insideinfo",
-    "Terraform_ip_addr":"",
-    "Consul_ip_addr":"http://3.35.89.134:8500",
-    "Vault_ip_addr":"",
-    "Nomad_ip_addr":"http://43.200.133.246:4646"
+    "CONSUL_INFO":[
+        {
+            "ip_address":"3.35.89.134:8500",
+            "node_name":"ip-172-31-46-237.ap-northeast-2.compute.internal"
+        },
+        {
+            "ip_address":"3.38.68.207:8500",
+            "node_name":"ip-172-31-40-117.ap-northeast-2.compute.internal"
+        },
+        {
+            "ip_address":"3.39.27.103:8500",
+            "node_name":"ip-172-31-41-5.ap-northeast-2.compute.internal"
+        }
+    ],
+    "NOMAD_INFO":[
+        {
+            "ip_address":"43.200.133.246:4646",
+            "node_name":"b0e64782-9fb1-adcc-2938-dd9c3355168a"
+        }
+    ],
+    "VAULT_INFO":[
+        {
+            "ip_address":"43.200.133.246:8200",
+            "node_name":"ip-172-31-52-0.ap-northeast-2.compute.internal"
+        },
+        {
+            "ip_address":"43.200.75.98:8200",
+            "node_name":"ip-172-31-54-206.ap-northeast-2.compute.internal"
+        }
+    ],
+    "TERRAFORM_INFO":[
+        {
+            "ip_address":"",
+            "node_name":""
+        }
+    ]
 }

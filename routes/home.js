@@ -6,7 +6,10 @@ var exec = require("child_process").exec;
 var bodyParser = require('body-parser');
 
 var myModule = require("../gdata.json");
-console.log("myModule[consul_ip]:"+myModule.Consul_ip_addr);
+//console.log("myModule[consul_1]:"+myModule.CONSUL_INFO[0].ip_address);
+//console.log("myModule[consul_2]:"+myModule.CONSUL_INFO[1].ip_address);
+//console.log("myModule[consul_3]:"+myModule.CONSUL_INFO[2].ip_address);
+//console.log("myModule[nomad]:"+myModule.NOMAD_INFO[0].ip_address);
 
 // Home
 router.get('/', function(req, res){
@@ -34,15 +37,15 @@ router.post('/ajax_call_api', function(req, res){
   var api_exec = "";
 
   if(api_flag=="cslSrvcSttsInfo"){ // consul
-    api_addr = "curl -s http://3.35.89.134:8500/v1/health/node/ip-172-31-46-237.ap-northeast-2.compute.internal";
+    api_addr = "curl -s http://"+myModule.CONSUL_INFO[0].ip_address+"/v1/health/node/"+myModule.CONSUL_INFO[0].node_name;
   } else if (api_flag=="cslSrvcSttsInfo_2nd"){
-    api_addr = "curl -s http://3.35.89.134:8500/v1/health/state/passing";
+    api_addr = "curl -s http://"+myModule.CONSUL_INFO[0].ip_address+"/v1/health/state/passing";
   } else if (api_flag=="cslSrvcNmInfo"){
-    api_addr = "curl -s http://3.35.89.134:8500/v1/catalog/node/ip-172-31-46-237.ap-northeast-2.compute.internal";
+    api_addr = "curl -s http://"+myModule.CONSUL_INFO[0].ip_address+"/v1/catalog/node/"+myModule.CONSUL_INFO[0].node_name;
   } else if (api_flag=='nmdAgtSvrPtchInfo') { // nomad
-    api_addr = "curl -s http://43.200.133.246:4646/v1/node/b0e64782-9fb1-adcc-2938-dd9c3355168a";
+    api_addr = "curl -s http://"+myModule.NOMAD_INFO[0].ip_address+"/v1/node/"+myModule.NOMAD_INFO[0].node_name;
   } else if (api_flag=='nmdJobNmInfo') {
-    api_addr = "curl -s http://43.200.133.246:4646/v1/job/example";
+    api_addr = "curl -s http://"+myModule.NOMAD_INFO[0].ip_address+"/v1/job/example";
   } else if (api_flag=='trrfrmRun') {
     api_addr = "curl -s 'Authorization: Bearer $TEAM_TOKEN' https://app.terraform.io/api/v2/runs/run-UQJ55vGbhnhdyzXg";
   } else if (api_flag=='trrfrmWorkspace') {
