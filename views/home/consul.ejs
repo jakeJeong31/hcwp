@@ -68,7 +68,8 @@
     <%- include('../partials/nav') %>
     <div class="container mb-3">
       <h2 class="mb-3">Consul</h2>
-      <p><%= ip_addr %></p>
+      <!--<p><%#= ip_addr %></p>-->
+      <p><%= gdata.Consul_ip_addr %></p>
       <P>Consul의 API</p>
       <input type="button" id="cslSrvcSttsInfo" onclick="ajaxCallBtn('cslSrvcSttsInfo')" width="100px" value="서비스상태조회_1" />
       <input type="button" id="cslSrvcSttsInfo" onclick="ajaxCallBtn('cslSrvcSttsInfo_2nd')" width="100px" value="서비스상태조회_2" />

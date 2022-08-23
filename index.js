@@ -8,11 +8,12 @@ var app = express();
 var cors = require('cors'); // 자신이 속하지 않은 도메인에 리소스 요청 허용 (특정 도메인만 허용하려면 option 사용해야함)
 
 // 서버 IP_ADDR 체크
-var ip = require('ip');
-console.dir(ip.address());
-
+//var ip = require('ip');
+//console.dir(ip.address());
 // 전역변수
-app.locals.ip_addr = ip.address();
+//app.locals.ip_addr=ip.address();
+
+app.locals.gdata=require("./gdata.json");
 
 // DB setting
 /*

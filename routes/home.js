@@ -5,6 +5,9 @@ var router = express.Router();
 var exec = require("child_process").exec;
 var bodyParser = require('body-parser');
 
+var myModule = require("../gdata.json");
+console.log("myModule[consul_ip]:"+myModule.Consul_ip_addr);
+
 // Home
 router.get('/', function(req, res){
   res.render('home/welcome');

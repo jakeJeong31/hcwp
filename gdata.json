@@ -1,4 +1,8 @@
 {
     "Auth":"jjw",
-    "Corp":"insideinfo"
+    "Corp":"insideinfo",
+    "Terraform_ip_addr":"",
+    "Consul_ip_addr":"http://3.35.89.134:8500",
+    "Vault_ip_addr":"",
+    "Nomad_ip_addr":"http://43.200.133.246:4646"
 }
