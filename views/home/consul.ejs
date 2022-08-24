@@ -42,8 +42,8 @@
             for(var i=0;i<result.rData.length;i++){
               strResult += "Node : "+JSON.stringify(result.rData[i].Node)+"<br>";
               strResult += "Status : "+JSON.stringify(result.rData[i].Status)+"<br>";
-              strResult += "Notes : "+JSON.stringify(result.rData[0].Notes)+"<br>";
-              strResult += "Output : "+JSON.stringify(result.rData[0].Output)+"<br><br>";
+              strResult += "Notes : "+JSON.stringify(result.rData[i].Notes)+"<br>";
+              strResult += "Output : "+JSON.stringify(result.rData[i].Output)+"<br><br>";
             }
 
           } else if (api_flag=='cslSrvcNmInfo'){

@@ -37,19 +37,19 @@ router.post('/ajax_call_api', function(req, res){
   var api_exec = "";
 
   if(api_flag=="cslSrvcSttsInfo"){ // consul
-    api_addr = "curl -s http://"+myModule.CONSUL_INFO[0].ip_address+"/v1/health/node/"+myModule.CONSUL_INFO[0].node_name;
+    api_addr = 'curl -s http://'+myModule.CONSUL_INFO[0].ip_address+'/v1/health/node/'+myModule.CONSUL_INFO[0].node_name;
   } else if (api_flag=="cslSrvcSttsInfo_2nd"){
-    api_addr = "curl -s http://"+myModule.CONSUL_INFO[0].ip_address+"/v1/health/state/passing";
+    api_addr = 'curl -s http://'+myModule.CONSUL_INFO[0].ip_address+'/v1/health/state/passing';
   } else if (api_flag=="cslSrvcNmInfo"){
-    api_addr = "curl -s http://"+myModule.CONSUL_INFO[0].ip_address+"/v1/catalog/node/"+myModule.CONSUL_INFO[0].node_name;
+    api_addr = 'curl -s http://'+myModule.CONSUL_INFO[0].ip_address+'/v1/catalog/node/'+myModule.CONSUL_INFO[0].node_name;
   } else if (api_flag=='nmdAgtSvrPtchInfo') { // nomad
-    api_addr = "curl -s http://"+myModule.NOMAD_INFO[0].ip_address+"/v1/node/"+myModule.NOMAD_INFO[0].node_name;
+    api_addr = 'curl -s http://'+myModule.NOMAD_INFO[0].ip_address+'/v1/node/'+myModule.NOMAD_INFO[0].node_name;
   } else if (api_flag=='nmdJobNmInfo') {
-    api_addr = "curl -s http://"+myModule.NOMAD_INFO[0].ip_address+"/v1/job/example";
+    api_addr = 'curl -s http://'+myModule.NOMAD_INFO[0].ip_address+'/v1/job/example';
   } else if (api_flag=='trrfrmRun') {
-    api_addr = "curl -s 'Authorization: Bearer $TEAM_TOKEN' https://app.terraform.io/api/v2/runs/run-UQJ55vGbhnhdyzXg";
+    api_addr = 'curl -s --header "Authorization: Bearer $TEAM_TOKEN" https://app.terraform.io/api/v2/runs/run-UQJ55vGbhnhdyzXg';
   } else if (api_flag=='trrfrmWorkspace') {
-    api_addr = "curl -s 'Authorization: Bearer $TEAM_TOKEN' https://app.terraform.io/api/v2/organizations/Insideinfo/workspaces";
+    api_addr = 'curl -s --header "Authorization: Bearer '+myModule.TERRAFORM_INFO[0].team_token+'" https://app.terraform.io/api/v2/organizations/Insideinfo/workspaces';
   } else {
     console.log("api_flag is null");
   }

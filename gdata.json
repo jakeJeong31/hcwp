@@ -34,7 +34,8 @@
     "TERRAFORM_INFO":[
         {
             "ip_address":"",
-            "node_name":""
+            "node_name":"",
+            "team_token":"yAUq6lXHSXgcBA.atlasv1.ux7CedTNnQdKOOTNYSVMik7yp9OZMJuQeunRCLUmiH0DcHcuLdLSskvJaVLhhqh0N5w"
         }
     ]
 }

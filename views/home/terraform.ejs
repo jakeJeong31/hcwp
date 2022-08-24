@@ -11,7 +11,7 @@
     function ajaxCallBtn(api_flag){
     //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
       // url 및 전송 parameter
-      var url = "http://127.0.0.1:3000/ajax_call_api";
+      var url = "/ajax_call_api";
       var data = {'api_flag' : api_flag}; // {'email' : data}
       data = JSON.stringify(data);
 
@@ -37,8 +37,16 @@
 
           } else if(api_flag=='trrfrmWorkspace'){
             // 워크스페이스
-            //strResult += "Region : "+JSON.stringify(result.rData.Region)+"<br>";
-            //strResult += "Namespace : "+JSON.stringify(result.rData.Namespace)+"<br>";
+            strResult += "Type : "+JSON.stringify(result.rData.data[0].type)+"<br>";
+            strResult += "Name : "+JSON.stringify(result.rData.data[0].attributes.name)+"<br>";
+            strResult += "Organization.id : "+JSON.stringify(result.rData.data[0].relationships.organization.data.id)+"<br>";
+            strResult += "Organization.type : "+JSON.stringify(result.rData.data[0].relationships.organization.data.type)+"<br>";
+            strResult += "Current-run.id : "+JSON.stringify(result.rData.data[0].relationships["current-run"].data.id)+"<br>";
+            strResult += "Current-run.type : "+JSON.stringify(result.rData.data[0].relationships["current-run"].data.type)+"<br>";
+            strResult += "Current-run.related : "+JSON.stringify(result.rData.data[0].relationships["current-run"].links.related)+"<br>";
+            strResult += "Latest-run.id : "+JSON.stringify(result.rData.data[0].relationships["latest-run"].data.id)+"<br>";
+            strResult += "Latest-run.type : "+JSON.stringify(result.rData.data[0].relationships["latest-run"].data.type)+"<br>";
+            strResult += "Latest-run.related : "+JSON.stringify(result.rData.data[0].relationships["latest-run"].links.related)+"<br>";
 
           } else {
 
