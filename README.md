@@ -11,6 +11,7 @@
 + npm init --yes
 + npm install --global nodemon 
 + npm install --save ejs express body-parser method-override http express cors
++ npm install --global forever : ref) unstable..
 
 2. GIT
 + git reset --hard HEAD
