@@ -16,3 +16,10 @@
 2. GIT
 + git reset --hard HEAD
 + git pull
+
+3. REF
+
+lsof -i tcp:3000
+kill -9 [PID]
+
+forever start -c nodemon .
