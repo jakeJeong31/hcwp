@@ -14,12 +14,12 @@
 + npm install --global forever : ref) unstable..
 
 2. GIT
-+ git reset --hard HEAD
++ git reset --hard HEAD^
 + git pull
 
 3. REF
++ lsof -i tcp:3000
++ kill -9 [PID]
 
-lsof -i tcp:3000
-kill -9 [PID]
-
-forever start -c nodemon .
+4. FOREVER
++ forever start -c nodemon .
