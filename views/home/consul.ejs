@@ -47,12 +47,15 @@
             $("#srvcNotes").val(result.rData[0].Notes);
             $("#srvcOutput").val(result.rData[0].Output);
 
-            if($("#tbSrvcSttsinfo").is(':visible')==true){
-              $("#tbSrvcSttsinfo").hide();
+            if($("#divSrvcSttsinfo").is(':visible')==true){
+              $("#divSrvcSttsinfo").hide();
             } else {
-              $("#tbSrvcSttsinfo").show();
-              $("#tbSrvcSttsinfo_2").hide();
-              $("#tbSrvcNameinfo").hide();
+              $("#divSrvcSttsinfo").show();
+              $("#divSrvcSttsinfo_2").hide();
+              $("#divSrvcNameinfo").hide();
+
+              var offset = $("#divSrvcSttsinfo").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
             }
 
           } else if(api_flag=='cslSrvcSttsInfo_2nd'){
@@ -76,12 +79,15 @@
 
             $("#srvcSttsList").html(html);
 
-            if($("#tbSrvcSttsinfo_2").is(':visible')==true){
-              $("#tbSrvcSttsinfo_2").hide();
+            if($("#divSrvcSttsinfo_2").is(':visible')==true){
+              $("#divSrvcSttsinfo_2").hide();
             } else {
-              $("#tbSrvcSttsinfo_2").show();
-              $("#tbSrvcSttsinfo").hide();
-              $("#tbSrvcNameinfo").hide();
+              $("#divSrvcSttsinfo_2").show();
+              $("#divSrvcSttsinfo").hide();
+              $("#divSrvcNameinfo").hide();
+
+              var offset = $("#divSrvcSttsinfo_2").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
             }
 
           } else if (api_flag=='cslSrvcNmInfo'){
@@ -89,12 +95,15 @@
             $("#cnslId").val(result.rData.Services.consul.ID);
             $("#cnslSrvc").val(result.rData.Services.consul.Service);
 
-            if($("#tbSrvcNameinfo").is(':visible')==true){
-              $("#tbSrvcNameinfo").hide();
+            if($("#divSrvcNameinfo").is(':visible')==true){
+              $("#divSrvcNameinfo").hide();
             } else {
-              $("#tbSrvcNameinfo").show();
-              $("#tbSrvcSttsinfo_2").hide();
-              $("#tbSrvcSttsinfo").hide();
+              $("#divSrvcNameinfo").show();
+              $("#divSrvcSttsinfo_2").hide();
+              $("#divSrvcSttsinfo").hide();
+
+              var offset = $("#divSrvcNameinfo").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
             }
             
           }
@@ -128,7 +137,7 @@
             <div class="row">
               <div class="col-sm-4 grid-margin">
                 <div class="card">
-                  <div class="card-body" onclick="ajaxCallBtn('cslSrvcSttsInfo')">
+                  <div class="card-body" onclick="ajaxCallBtn('cslSrvcSttsInfo')" style="cursor:pointer">
                     <div class="row">
                       <div class="col-8 col-sm-12 col-xl-8 my-auto">
                         <div class="d-flex d-sm-block d-md-flex align-items-center">
@@ -145,7 +154,7 @@
               </div>
               <div class="col-sm-4 grid-margin">
                 <div class="card">
-                  <div class="card-body" onclick="ajaxCallBtn('cslSrvcSttsInfo_2nd')">
+                  <div class="card-body" onclick="ajaxCallBtn('cslSrvcSttsInfo_2nd')" style="cursor:pointer">
                     <div class="row">
                       <div class="col-8 col-sm-12 col-xl-8 my-auto">
                         <div class="d-flex d-sm-block d-md-flex align-items-center">
@@ -162,7 +171,7 @@
               </div>
               <div class="col-sm-4 grid-margin">
                 <div class="card">
-                  <div class="card-body" onclick="ajaxCallBtn('cslSrvcNmInfo')">
+                  <div class="card-body" onclick="ajaxCallBtn('cslSrvcNmInfo')" style="cursor:pointer">
                     <div class="row">
                       <div class="col-8 col-sm-12 col-xl-8 my-auto">
                         <div class="d-flex d-sm-block d-md-flex align-items-center">
@@ -179,7 +188,7 @@
               </div>
             </div>
             
-            <div class="row" id="tbSrvcSttsinfo" style="display:none;">
+            <div class="row" id="divSrvcSttsinfo" style="display:none;">
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
@@ -245,7 +254,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" id="tbSrvcNameinfo" style="display:none;">
+            <div class="row" id="divSrvcNameinfo" style="display:none;">
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
@@ -274,7 +283,7 @@
                 </div>
               </div>
             </div>
-            <div class="row" id="tbSrvcSttsinfo_2" style="display:none;">
+            <div class="row" id="divSrvcSttsinfo_2" style="display:none;">
               <div class="col-md-12 col-xl-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
