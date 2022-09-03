@@ -39,63 +39,6 @@
 
   </script>
   <body>
-    <!--<div class="container mb-3">
-      <h2 class="mb-3">Vault</h2>
-      <P>Vault의 API</p>
-      <div>
-        <table id="vTableAccessValue" border="1" class="table">
-          <thead>
-            <tr>
-              <th>Vault 접속정보</th>
-              <th>사용자 입력값</th>
-              <th>설명</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>접속대상</td>
-              <td><input type="text" id="obj_addr" name="obj_addr" size="20" style="width:100%;" /></td>
-              <td>IP주소만입력(예:127.0.0.1)</td>
-            </tr>
-            <tr>
-              <td>역할 ID</td>
-              <td><input type="text" id="role_id" name="role_id" size="20" style="width:100%;" /></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>시크릿 ID</td>
-              <td><input type="text" id="secret_id" name="secret_id" size="20" style="width:100%;" /></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div>
-          <li>Vault 접속정보</li>
-          <input type="button" class="float-right" onclick="vaultAccess()" value="Vault 접속" />
-        </div>
-        <table id="vTableAccessInfo" border="1" class="table">
-          <thead>
-            <tr>
-              <th>Key Name</th>
-              <th>Key Value</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Client_token</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Token_policies</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Lease_duration</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>-->
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.ejs -->
       <%- include('../partials/_sidebar') %>
@@ -119,7 +62,6 @@
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <!--<h4 class="card-title">Vault Enterprise</h4>-->
                     <form class="form-sample">
                       <p class="card-description"> Vault 접속정보 입력 (사용자)</p>
                       <div class="row">
@@ -157,7 +99,17 @@
                           </div>
                         </div>
                       </div>
-                      
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <form class="form-sample">
                       <p class="card-description"> Vault 접속정보 </p>
                       <div class="row">
                         <div class="col-md-6">
@@ -199,7 +151,208 @@
                 </div>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <form class="form-sample">
+                      <p class="card-description"> DB 계정 - 휘발성(임시) 계정 </p>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Password</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Username</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p class="card-description"> DB 계정 - 기존 계정 비밀번호 변경 </p>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Last_Vault_Rotation</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Password</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Rotation_period</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">ttl</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Username</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <form class="form-sample">
+                      <p class="card-description"> 어플리케이션용 계정 </p>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">uidbs01h (password)</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">uidbs02h (password)</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">uidbs03h (password)</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 grid-margin">
+                <div class="card">
+                  <div class="card-body">
+                    <form class="form-sample">
+                      <p class="card-description"> SSH One Time Password </p>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">IP</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Key</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Port</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Key_Type</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Username</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           </div>
+
+                      
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.ejs -->
           <%- include('../partials/_footer') %>
