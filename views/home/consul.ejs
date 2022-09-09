@@ -5,115 +5,6 @@
   <head>
     <%- include('../partials/head') %>
   </head>
-  <script>
-
-    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
-    function ajaxCallBtn(api_flag){
-    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
-      // url 및 전송 parameter
-      var url = "/ajax_call_api";
-      var data = {'api_flag':api_flag}; // {'email' : data}
-      data = JSON.stringify(data);
-
-      // request 셋팅
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST',url);
-      xhr.setRequestHeader('Content-Type', "application/json");
-      xhr.send(data);
-
-      // ajax 호출 리턴 후
-      xhr.addEventListener('load', function(){
-
-        var result = JSON.parse(xhr.responseText);
-        var strResult = "";
-        console.log("result:"+JSON.stringify(result));
-
-        if(result != null){
-
-          if(api_flag=='cslSrvcSttsInfo'){
-            // 서비스상태조회_1
-            $("#srvcName").val(result.rData[0].Name);
-            if(result.rData[0].Status=="passing"){
-              $("#rd_serviceStatus1").attr('checked',true);
-              $("#rd_serviceStatus1").attr('disabled',false);
-            } else if (result.rData[0].Status=="warning"){
-              $("#rd_serviceStatus2").attr('checked',true);
-            } else if (result.rData[0].Status=="critical"){
-              $("#rd_serviceStatus3").attr('checked',true);
-            } else if (result.rData[0].Status=="no check"){
-              $("#rd_serviceStatus4").attr('checked',true);
-            }
-
-            $("#srvcNotes").val(result.rData[0].Notes);
-            $("#srvcOutput").val(result.rData[0].Output);
-
-            if($("#divSrvcSttsinfo").is(':visible')==true){
-              $("#divSrvcSttsinfo").hide();
-            } else {
-              $("#divSrvcSttsinfo").show();
-              $("#divSrvcSttsinfo_2").hide();
-              $("#divSrvcNameinfo").hide();
-
-              var offset = $("#divSrvcSttsinfo").offset(); //해당 위치 반환
-              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
-            }
-
-          } else if(api_flag=='cslSrvcSttsInfo_2nd'){
-            // 서비스상태조회_2
-            var html = "";
-            
-            for(var i=0;i<result.rData.length;i++){
-              html += '<div class="preview-item border-bottom">';
-              html += '  <div class="preview-item-content d-flex flex-grow">';
-              html += '    <div class="flex-grow">';
-              html += '      <div class="d-flex d-md-block d-xl-flex justify-content-between">';
-              html += '        <h6 class="preview-subject">'+result.rData[i].Node+'</h6>';
-              html += '        <p class="text-muted text-small">'+result.rData[i].Status+'</p>';
-              html += '       </div>';
-              html += '      <p class="text-muted">Notes : '+result.rData[i].Notes+'</p>';
-              html += '      <p class="text-muted">Output : '+result.rData[i].Output+'</p>';
-              html += '    </div>';
-              html += '  </div>';
-              html += '</div>';
-            }
-
-            $("#srvcSttsList").html(html);
-
-            if($("#divSrvcSttsinfo_2").is(':visible')==true){
-              $("#divSrvcSttsinfo_2").hide();
-            } else {
-              $("#divSrvcSttsinfo_2").show();
-              $("#divSrvcSttsinfo").hide();
-              $("#divSrvcNameinfo").hide();
-
-              var offset = $("#divSrvcSttsinfo_2").offset(); //해당 위치 반환
-              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
-            }
-
-          } else if (api_flag=='cslSrvcNmInfo'){
-            // 서비스이름조회
-            $("#cnslId").val(result.rData.Services.consul.ID);
-            $("#cnslSrvc").val(result.rData.Services.consul.Service);
-
-            if($("#divSrvcNameinfo").is(':visible')==true){
-              $("#divSrvcNameinfo").hide();
-            } else {
-              $("#divSrvcNameinfo").show();
-              $("#divSrvcSttsinfo_2").hide();
-              $("#divSrvcSttsinfo").hide();
-
-              var offset = $("#divSrvcNameinfo").offset(); //해당 위치 반환
-              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
-            }
-            
-          }
-
-        } else {
-          alert("API CALL FAIL..");
-        }
-      });
-    }
-  </script>
   <body>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.ejs -->
@@ -306,4 +197,112 @@
     <!-- container-scroller -->
     <%- include('../partials/commonJs') %>
   </body>
+  <script>
+
+    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
+    function ajaxCallBtn(api_flag){
+    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
+      // url 및 전송 parameter
+      var url = "/ajax_call_api";
+      var data = {'api_flag':api_flag}; // {'email' : data}
+      data = JSON.stringify(data);
+
+      // request 셋팅
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST',url);
+      xhr.setRequestHeader('Content-Type', "application/json");
+      xhr.send(data);
+
+      // ajax 호출 리턴 후
+      xhr.addEventListener('load', function(){
+
+        var result = JSON.parse(xhr.responseText);
+        var strResult = "";
+        console.log("result:"+JSON.stringify(result));
+
+        if(result.rData.errors!=null){
+          alert(result.rData.errors);
+        } else {
+
+          if(api_flag=='cslSrvcSttsInfo'){
+            // 서비스상태조회_1
+            $("#srvcName").val(result.rData[0].Name);
+            if(result.rData[0].Status=="passing"){
+              $("#rd_serviceStatus1").attr('checked',true);
+              $("#rd_serviceStatus1").attr('disabled',false);
+            } else if (result.rData[0].Status=="warning"){
+              $("#rd_serviceStatus2").attr('checked',true);
+            } else if (result.rData[0].Status=="critical"){
+              $("#rd_serviceStatus3").attr('checked',true);
+            } else if (result.rData[0].Status=="no check"){
+              $("#rd_serviceStatus4").attr('checked',true);
+            }
+
+            $("#srvcNotes").val(result.rData[0].Notes);
+            $("#srvcOutput").val(result.rData[0].Output);
+
+            if($("#divSrvcSttsinfo").is(':visible')==true){
+              $("#divSrvcSttsinfo").hide();
+            } else {
+              $("#divSrvcSttsinfo").show();
+              $("#divSrvcSttsinfo_2").hide();
+              $("#divSrvcNameinfo").hide();
+
+              var offset = $("#divSrvcSttsinfo").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
+            }
+
+          } else if(api_flag=='cslSrvcSttsInfo_2nd'){
+            // 서비스상태조회_2
+            var html = "";
+            
+            for(var i=0;i<result.rData.length;i++){
+              html += '<div class="preview-item border-bottom">';
+              html += '  <div class="preview-item-content d-flex flex-grow">';
+              html += '    <div class="flex-grow">';
+              html += '      <div class="d-flex d-md-block d-xl-flex justify-content-between">';
+              html += '        <h6 class="preview-subject">'+result.rData[i].Node+'</h6>';
+              html += '        <p class="text-muted text-small">'+result.rData[i].Status+'</p>';
+              html += '       </div>';
+              html += '      <p class="text-muted">Notes : '+result.rData[i].Notes+'</p>';
+              html += '      <p class="text-muted">Output : '+result.rData[i].Output+'</p>';
+              html += '    </div>';
+              html += '  </div>';
+              html += '</div>';
+            }
+
+            $("#srvcSttsList").html(html);
+
+            if($("#divSrvcSttsinfo_2").is(':visible')==true){
+              $("#divSrvcSttsinfo_2").hide();
+            } else {
+              $("#divSrvcSttsinfo_2").show();
+              $("#divSrvcSttsinfo").hide();
+              $("#divSrvcNameinfo").hide();
+
+              var offset = $("#divSrvcSttsinfo_2").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
+            }
+
+          } else if (api_flag=='cslSrvcNmInfo'){
+            // 서비스이름조회
+            $("#cnslId").val(result.rData.Services.consul.ID);
+            $("#cnslSrvc").val(result.rData.Services.consul.Service);
+
+            if($("#divSrvcNameinfo").is(':visible')==true){
+              $("#divSrvcNameinfo").hide();
+            } else {
+              $("#divSrvcNameinfo").show();
+              $("#divSrvcSttsinfo_2").hide();
+              $("#divSrvcSttsinfo").hide();
+
+              var offset = $("#divSrvcNameinfo").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
+            }
+            
+          }
+        }
+      });
+    }
+  </script>
 </html>

@@ -5,106 +5,6 @@
   <head>
     <%- include('../partials/head') %>
   </head>
-  
-  <script>
-  
-  function vaultServerIpSetting(){  // Vault Server Ip 값 selectbox 항목 추가
-    for(var i=0;i<$("input[name^='hd_vault']").length;i++){
-      $("#vltAcc_server_ip").append("<option value='"+$("input[name^='hd_vault']").eq(i).val()+"'> "+$("input[name^='hd_vault']").eq(i).val() +"</option>");
-    }
-  }
-
-  function validationCheck(){
-
-    if($("#vltAcc_server_ip").val()==""){
-      alert("Vault Server IP를 입력해주세요.");
-      $("#vltAcc_server_ip").focus();
-      return false;
-    }
-    if($("#vltAcc_role_id").val()==""){
-      alert("Role ID를 입력해주세요.");
-      $("#vltAcc_role_id").focus();
-      return false;
-    }
-    if($("#vltAcc_secret_id").val()==""){
-      alert("Secret ID를 입력해주세요.");
-      $("#vltAcc_secret_id").focus();
-      return false;
-    }
-    return true;
-  }
-
-  function vaultAccess(){
-
-    if(validationCheck()){
-      var vaultRequestInfo = "";
-      vaultRequestInfo += "접속대상:"+$("#obj_addr").val()+":8200\n";
-      vaultRequestInfo += "역할 ID:"+$("#role_id").val()+"\n";
-      vaultRequestInfo += "시크릿 ID:"+$("#secret_id").val()+"\n";
-      alert("* Vault 접속요청 정보\n"+vaultRequestInfo);
-    }
-  }
-
-  // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
-  function ajaxCallBtn(api_flag){
-    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
-
-      if(!validationCheck()){
-        return;
-      }
-      // url 및 전송 parameter
-      var url = "/ajax_call_api";
-      var data = {'api_flag':api_flag, 'vault_ip_addr':$("#vltAcc_server_ip").val(), 'client_token':$("#vltAcc_client_token").val()};
-      //if($("#vltAcc_client_token").val()!=""){
-        //data = {'api_flag':api_flag, }
-      //}
-      data = JSON.stringify(data);
-
-      // request 셋팅
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST',url);
-      xhr.setRequestHeader('Content-Type', "application/json");
-      xhr.send(data);
-
-      // ajax 호출 리턴 후
-      xhr.addEventListener('load', function(){
-
-        var result = JSON.parse(xhr.responseText);
-        var strResult = "";
-        console.log("result:"+JSON.stringify(result));
-
-        if(result != null){ // 이거 수정해야함 result.rData 체크하는 걸로 -> home.js에서는 리턴값이 있을 때만 넘기는걸로
-          
-          if(api_flag=='vltAccInfo'){
-            // Vault 접속정보
-            $("#vltAcc_client_token").val(result.rData.auth.client_token);
-            $("#vltAcc_token_policies").val(result.rData.auth.token_policies);
-            $("#vltAcc_lease_duration").val(result.rData.auth.lease_duration);
-            
-            $("#vltDbCredInfo").attr('disabled',false);
-            $("#vltOtpCredInfo").attr('disabled',false);
-
-          } else if(api_flag=='vltDbCredInfo'){
-            // Vault DB Credit 정보
-            $("#vltDb_tmp_password").val(result.rData.data.password);
-            $("#vltDb_tmp_username").val(result.rData.data.username);
-
-          } else if(api_flag=='vltOtpCredInfo'){
-            // Vault OTP Credit 정보
-            $("#vltOtp_tmp_id").val(result.rData.data.ip);
-            $("#vltOtp_tmp_port").val(result.rData.data.port);
-            $("#vltOtp_tmp_key").val(result.rData.data.key);
-            $("#vltOtp_tmp_keyType").val(result.rData.data.key_type);
-            $("#vltOtp_tmp_username").val(result.rData.data.username);
-
-          }
-
-        } else {
-          alert("API CALL FAIL..");
-        }
-      });
-    }
-  </script>
   <body>
     <input type="hidden" name="hd_vault_server_ip" id="hd_vault_server_ip_1" value="<%=gData.VAULT_INFO[0].ip_address%>" />
     <input type="hidden" name="hd_vault_server_ip" id="hd_vault_server_ip_2" value="<%=gData.VAULT_INFO[1].ip_address%>" />
@@ -386,9 +286,7 @@
                 </div>
               </div>
             </div>
-            
           </div>
-
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.ejs -->
           <%- include('../partials/_footer') %>
@@ -402,6 +300,92 @@
     <%- include('../partials/commonJs') %>
   </body>
   <script>
-    vaultServerIpSetting();
-  </script>
+  
+    function vaultServerIpSetting(){  // Vault Server Ip 값 selectbox 항목 추가
+      for(var i=0;i<$("input[name^='hd_vault']").length;i++){
+        $("#vltAcc_server_ip").append("<option value='"+$("input[name^='hd_vault']").eq(i).val()+"'> "+$("input[name^='hd_vault']").eq(i).val() +"</option>");
+      }
+    }
+  
+    function validationCheck(){
+  
+      if($("#vltAcc_server_ip").val()==""){
+        alert("Vault Server IP를 입력해주세요.");
+        $("#vltAcc_server_ip").focus();
+        return false;
+      }
+      if($("#vltAcc_role_id").val()==""){
+        alert("Role ID를 입력해주세요.");
+        $("#vltAcc_role_id").focus();
+        return false;
+      }
+      if($("#vltAcc_secret_id").val()==""){
+        alert("Secret ID를 입력해주세요.");
+        $("#vltAcc_secret_id").focus();
+        return false;
+      }
+      return true;
+    }
+  
+    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
+    function ajaxCallBtn(api_flag){
+      //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
+  
+        if(!validationCheck()){
+          return;
+        }
+        // url 및 전송 parameter
+        var url = "/ajax_call_api";
+        var data = {'api_flag':api_flag, 'vault_ip_addr':$("#vltAcc_server_ip").val(), 'client_token':$("#vltAcc_client_token").val()};
+        //if($("#vltAcc_client_token").val()!=""){
+          //data = {'api_flag':api_flag, }
+        //}
+        data = JSON.stringify(data);
+  
+        // request 셋팅
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST',url);
+        xhr.setRequestHeader('Content-Type', "application/json");
+        xhr.send(data);
+  
+        // ajax 호출 리턴 후
+        xhr.addEventListener('load', function(){
+          
+          var result = JSON.parse(xhr.responseText);
+          var strResult = "";
+          console.log("result:"+JSON.stringify(result));
+          
+          if(result.rData.errors!=null){
+            alert(result.rData.errors);
+          } else {
+  
+            if(api_flag=='vltAccInfo'){
+              // Vault 접속정보
+              $("#vltAcc_client_token").val(result.rData.auth.client_token);
+              $("#vltAcc_token_policies").val(result.rData.auth.token_policies);
+              $("#vltAcc_lease_duration").val(result.rData.auth.lease_duration);
+              
+              $("#vltDbCredInfo").attr('disabled',false);
+              $("#vltOtpCredInfo").attr('disabled',false);
+  
+            } else if(api_flag=='vltDbCredInfo'){
+              // Vault DB Credit 정보
+              $("#vltDb_tmp_password").val(result.rData.data.password);
+              $("#vltDb_tmp_username").val(result.rData.data.username);
+  
+            } else if(api_flag=='vltOtpCredInfo'){
+              // Vault OTP Credit 정보
+              $("#vltOtp_tmp_id").val(result.rData.data.ip);
+              $("#vltOtp_tmp_port").val(result.rData.data.port);
+              $("#vltOtp_tmp_key").val(result.rData.data.key);
+              $("#vltOtp_tmp_keyType").val(result.rData.data.key_type);
+              $("#vltOtp_tmp_username").val(result.rData.data.username);
+  
+            }
+          }
+        });
+      }
+
+      vaultServerIpSetting();
+    </script>
 </html>

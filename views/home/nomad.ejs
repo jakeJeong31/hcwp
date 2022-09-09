@@ -5,89 +5,6 @@
   <head>
     <%- include('../partials/head') %>
   </head>
-  <script>
-
-    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
-    function ajaxCallBtn(api_flag){
-    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
-      // url 및 전송 parameter
-      var url = "/ajax_call_api";
-      var data = {'api_flag':api_flag}; // {'email' : data}
-      data = JSON.stringify(data);
-
-      // request 셋팅
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST',url);
-      xhr.setRequestHeader('Content-Type', "application/json");
-      xhr.send(data);
-
-      // ajax 호출 리턴 후
-      xhr.addEventListener('load', function(){
-
-        var result = JSON.parse(xhr.responseText);
-        var strResult = "";
-        console.log("result:"+JSON.stringify(result));
-
-        if(result != null){ // 이거 수정해야함 result.rData 체크하는 걸로 -> home.js에서는 리턴값이 있을 때만 넘기는걸로
-
-          if(api_flag=='nmdAgtSvrPtchInfo'){
-            // 서버패치조회
-            var html = "";
-
-            html += '<tr>';
-            html += '  <td><font color="white">kernel.name</color></td>';
-            html += '  <td>'+result.rData.Attributes["kernel.name"]+'</td>';
-            html += '  <td><font color="white">os.name</color></td>';
-            html += '  <td>'+result.rData.Attributes["os.name"]+'</td>';
-            html += '  <td><font color="white">os.version</color></td>';
-            html += '  <td>'+result.rData.Attributes["os.version"]+'</td>';
-            html += '</tr>';
-
-            $("#tbSrvrPtchInfo tbody").html(html);
-
-            if($("#divSrvrPtchInfo").is(':visible')==true){
-              $("#divSrvrPtchInfo").hide();
-            } else {
-              $("#divSrvrPtchInfo").show();
-              $("#divJbNmListInfo").hide();
-
-              var offset = $("#divSrvrPtchInfo").offset(); //해당 위치 반환
-              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
-            }
-
-          } else if(api_flag=='nmdJobNmInfo'){
-            // 잡네임
-            var html = "";
-
-            html += '<tr>';
-            html += '  <td>'+result.rData.Region+'</td>';
-            html += '  <td>'+result.rData.Namespace+'</td>';
-            html += '  <td><label class="badge badge-info">'+result.rData.ID+'</label></td>';
-            html += '  <td>'+result.rData.ParentID+'</td>';
-            html += '  <td>'+result.rData.Name+'</td>';
-            html += '  <td>'+result.rData.Type+'</td>';
-            html += '</tr>';
-
-            $("#tbJbNmListInfo tbody").html(html);
-
-            if($("#divJbNmListInfo").is(':visible')==true){
-              $("#divJbNmListInfo").hide();
-            } else {
-              $("#divJbNmListInfo").show();
-              $("#divSrvrPtchInfo").hide();
-              
-              var offset = $("#divJbNmListInfo").offset(); //해당 위치 반환
-              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
-            }
-
-          } 
-
-        } else {
-          alert("API CALL FAIL..");
-        }
-      });
-    }
-  </script>
   <body>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.ejs -->
@@ -161,4 +78,86 @@
     <!-- container-scroller -->
     <%- include('../partials/commonJs') %>
   </body>
+  <script>
+
+    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
+    function ajaxCallBtn(api_flag){
+    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
+      // url 및 전송 parameter
+      var url = "/ajax_call_api";
+      var data = {'api_flag':api_flag}; // {'email' : data}
+      data = JSON.stringify(data);
+
+      // request 셋팅
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST',url);
+      xhr.setRequestHeader('Content-Type', "application/json");
+      xhr.send(data);
+
+      // ajax 호출 리턴 후
+      xhr.addEventListener('load', function(){
+
+        var result = JSON.parse(xhr.responseText);
+        var strResult = "";
+        console.log("result:"+JSON.stringify(result));
+
+        if(result.rData.errors!=null){
+          alert(result.rData.errors);
+        } else {
+
+          if(api_flag=='nmdAgtSvrPtchInfo'){
+            // 서버패치조회
+            var html = "";
+
+            html += '<tr>';
+            html += '  <td><font color="white">kernel.name</color></td>';
+            html += '  <td>'+result.rData.Attributes["kernel.name"]+'</td>';
+            html += '  <td><font color="white">os.name</color></td>';
+            html += '  <td>'+result.rData.Attributes["os.name"]+'</td>';
+            html += '  <td><font color="white">os.version</color></td>';
+            html += '  <td>'+result.rData.Attributes["os.version"]+'</td>';
+            html += '</tr>';
+
+            $("#tbSrvrPtchInfo tbody").html(html);
+
+            if($("#divSrvrPtchInfo").is(':visible')==true){
+              $("#divSrvrPtchInfo").hide();
+            } else {
+              $("#divSrvrPtchInfo").show();
+              $("#divJbNmListInfo").hide();
+
+              var offset = $("#divSrvrPtchInfo").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
+            }
+
+          } else if(api_flag=='nmdJobNmInfo'){
+            // 잡네임
+            var html = "";
+
+            html += '<tr>';
+            html += '  <td>'+result.rData.Region+'</td>';
+            html += '  <td>'+result.rData.Namespace+'</td>';
+            html += '  <td><label class="badge badge-info">'+result.rData.ID+'</label></td>';
+            html += '  <td>'+result.rData.ParentID+'</td>';
+            html += '  <td>'+result.rData.Name+'</td>';
+            html += '  <td>'+result.rData.Type+'</td>';
+            html += '</tr>';
+
+            $("#tbJbNmListInfo tbody").html(html);
+
+            if($("#divJbNmListInfo").is(':visible')==true){
+              $("#divJbNmListInfo").hide();
+            } else {
+              $("#divJbNmListInfo").show();
+              $("#divSrvrPtchInfo").hide();
+              
+              var offset = $("#divJbNmListInfo").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
+            }
+
+          } 
+        }
+      });
+    }
+  </script>
 </html>

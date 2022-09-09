@@ -5,69 +5,6 @@
   <head>
     <%- include('../partials/head') %>
   </head>
-  <script>
-
-    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
-    function ajaxCallBtn(api_flag){
-    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
-      // url 및 전송 parameter
-      var url = "/ajax_call_api";
-      var data = {'api_flag':api_flag}; // {'email' : data}
-      data = JSON.stringify(data);
-
-      // request 셋팅
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST',url);
-      xhr.setRequestHeader('Content-Type', "application/json");
-      xhr.send(data);
-
-      // ajax 호출 리턴 후
-      xhr.addEventListener('load', function(){
-
-        var result = JSON.parse(xhr.responseText);
-        var strResult = "";
-        console.log("result:"+JSON.stringify(result));
-
-        if(result != null){ // 이거 수정해야함 result.rData 체크하는 걸로 -> home.js에서는 리턴값이 있을 때만 넘기는걸로
-
-          if(api_flag=='trrfrmRun'){
-            // 테라폼
-            //strResult += "driver.docker.os_type : "+JSON.stringify(result.rData.Attributes["driver.docker.os_type"])+"<br>";
-            //strResult += "os.name : "+JSON.stringify(result.rData.Attributes["os.name"])+"<br>";
-            alert("준비중입니다.");
-
-          } else if(api_flag=='trrfrmWorkspace'){
-            // 워크스페이스
-            $("#wksp_type").val(result.rData.data[0].type);
-            $("#wksp_name").val(result.rData.data[0].attributes.name);
-            $("#wksp_Organization_id").val(result.rData.data[0].relationships.organization.data.id);
-            $("#wksp_Organization_type").val(result.rData.data[0].relationships.organization.data.type);
-            $("#wksp_current_run_id").val(result.rData.data[0].relationships["current-run"].data.id);
-            $("#wksp_current_run_type").val(result.rData.data[0].relationships["current-run"].data.type);
-            $("#wksp_current_run_related").val(result.rData.data[0].relationships["current-run"].links.related);
-            $("#wksp_latest_run_id").val(result.rData.data[0].relationships["latest-run"].data.id);
-            $("#wksp_latest_run_type").val(result.rData.data[0].relationships["latest-run"].data.type);
-            $("#wksp_latest_run_related").val(result.rData.data[0].relationships["latest-run"].links.related);
-
-            if($("#divTrrfrmWkspcInfo").is(':visible')==true){
-              $("#divTrrfrmWkspcInfo").hide();
-            } else {
-              $("#divTrrfrmWkspcInfo").show();
-              //$("#divTrrfrmRun").hide();
-
-              var offset = $("#divTrrfrmWkspcInfo").offset(); //해당 위치 반환
-              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
-            }
-          } 
-
-          //document.querySelector("#showResult").innerHTML = strResult;
-
-        } else {
-          alert("API CALL FAIL..");
-        }
-      });
-    }
-  </script>
   <body>
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.ejs -->
@@ -186,4 +123,68 @@
     <!-- container-scroller -->
     <%- include('../partials/commonJs') %>
   </body>
+  <script>
+
+    // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
+    function ajaxCallBtn(api_flag){
+    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
+      // url 및 전송 parameter
+      var url = "/ajax_call_api";
+      var data = {'api_flag':api_flag}; // {'email' : data}
+      data = JSON.stringify(data);
+
+      if(api_flag=='trrfrmRun'){
+        alert("준비중입니다.");
+        return;
+      }
+      // request 셋팅
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST',url);
+      xhr.setRequestHeader('Content-Type', "application/json");
+      xhr.send(data);
+
+      // ajax 호출 리턴 후
+      xhr.addEventListener('load', function(){
+
+        var result = JSON.parse(xhr.responseText);
+        var strResult = "";
+        console.log("result:"+JSON.stringify(result));
+
+        if(result.rData.errors!=null){
+          alert(result.rData.errors);
+        } else {
+
+          if(api_flag=='trrfrmRun'){
+            // 테라폼
+            //strResult += "driver.docker.os_type : "+JSON.stringify(result.rData.Attributes["driver.docker.os_type"])+"<br>";
+            //strResult += "os.name : "+JSON.stringify(result.rData.Attributes["os.name"])+"<br>";
+
+          } else if(api_flag=='trrfrmWorkspace'){
+            // 워크스페이스
+            $("#wksp_type").val(result.rData.data[0].type);
+            $("#wksp_name").val(result.rData.data[0].attributes.name);
+            $("#wksp_Organization_id").val(result.rData.data[0].relationships.organization.data.id);
+            $("#wksp_Organization_type").val(result.rData.data[0].relationships.organization.data.type);
+            $("#wksp_current_run_id").val(result.rData.data[0].relationships["current-run"].data.id);
+            $("#wksp_current_run_type").val(result.rData.data[0].relationships["current-run"].data.type);
+            $("#wksp_current_run_related").val(result.rData.data[0].relationships["current-run"].links.related);
+            $("#wksp_latest_run_id").val(result.rData.data[0].relationships["latest-run"].data.id);
+            $("#wksp_latest_run_type").val(result.rData.data[0].relationships["latest-run"].data.type);
+            $("#wksp_latest_run_related").val(result.rData.data[0].relationships["latest-run"].links.related);
+
+            if($("#divTrrfrmWkspcInfo").is(':visible')==true){
+              $("#divTrrfrmWkspcInfo").hide();
+            } else {
+              $("#divTrrfrmWkspcInfo").show();
+              //$("#divTrrfrmRun").hide();
+
+              var offset = $("#divTrrfrmWkspcInfo").offset(); //해당 위치 반환
+              $('html, body').animate({scrollTop: offset.top-100},400); // 선택한 위치로 이동. 두번째 인자는 0.4초를 의미한다.
+            }
+          }
+          //document.querySelector("#showResult").innerHTML = strResult;
+        }
+      });
+    }
+  </script>
 </html>

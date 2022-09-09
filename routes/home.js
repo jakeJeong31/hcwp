@@ -4,12 +4,8 @@ var express = require('express');
 var router = express.Router();
 var exec = require("child_process").exec;
 var bodyParser = require('body-parser');
-
+// global varible
 var myModule = require("../gdata.json");
-//console.log("myModule[consul_1]:"+myModule.CONSUL_INFO[0].ip_address);
-//console.log("myModule[consul_2]:"+myModule.CONSUL_INFO[1].ip_address);
-//console.log("myModule[consul_3]:"+myModule.CONSUL_INFO[2].ip_address);
-//console.log("myModule[nomad]:"+myModule.NOMAD_INFO[0].ip_address);
 
 // Home
 router.get('/', function(req, res){
@@ -56,11 +52,17 @@ router.post('/ajax_call_api', function(req, res){
   } else if (api_flag=='trrfrmWorkspace') {
     api_addr = 'curl -s --header "Authorization: Bearer '+myModule.TERRAFORM_INFO[0].team_token+'" https://app.terraform.io/api/v2/organizations/Insideinfo/workspaces';
   } else if (api_flag=='vltAccInfo') {
-    api_addr = 'curl --request POST --data \"{""password"": ""'+myModule.VAULT_INFO[0].usps_password+'""}\" http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/userpass/login/test';
+    /* Window */
+    //api_addr = 'curl --request POST --data \"{""password"": ""'+myModule.VAULT_INFO[0].usps_password+'""}\" http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/userpass/login/test';
+    /* Linux */
+    api_addr = 'curl --request POST --data \'{\"password\": \"'+myModule.VAULT_INFO[0].usps_password+'\"}\' http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/userpass/login/test';
   } else if (api_flag=='vltDbCredInfo') {
     api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/database/creds/workshop-app';
   } else if (api_flag=='vltOtpCredInfo') {
-    api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" --request POST --data \"{""ip"": ""'+vault_ip_addr+'""}\"  http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/ssh/creds/otp_key_role';
+    /* Window */
+    //api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" --request POST --data \"{""ip"": ""'+vault_ip_addr+'""}\"  http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/ssh/creds/otp_key_role';
+    /* Linux */
+    api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" --request POST --data \'{\"ip\": \"'+vault_ip_addr+'\"}\'  http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/ssh/creds/otp_key_role';
   } else {
     console.log("api_flag is null");
   }
