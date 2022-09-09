@@ -12,7 +12,7 @@
     //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
       // url 및 전송 parameter
       var url = "/ajax_call_api";
-      var data = {'api_flag' : api_flag}; // {'email' : data}
+      var data = {'api_flag':api_flag}; // {'email' : data}
       data = JSON.stringify(data);
 
       // request 셋팅
@@ -81,8 +81,6 @@
             }
 
           } 
-
-          document.querySelector("#showResult").innerHTML = strResult;
 
         } else {
           alert("API CALL FAIL..");

@@ -5,22 +5,30 @@
   <head>
     <%- include('../partials/head') %>
   </head>
+  
   <script>
+  
+  function vaultServerIpSetting(){  // Vault Server Ip 값 selectbox 항목 추가
+    for(var i=0;i<$("input[name^='hd_vault']").length;i++){
+      $("#vltAcc_server_ip").append("<option value='"+$("input[name^='hd_vault']").eq(i).val()+"'> "+$("input[name^='hd_vault']").eq(i).val() +"</option>");
+    }
+  }
+
   function validationCheck(){
 
-    if($("#obj_addr").val()==""){
-      alert("접속대상 IP를 입력해주세요.");
-      $("#obj_addr").focus();
+    if($("#vltAcc_server_ip").val()==""){
+      alert("Vault Server IP를 입력해주세요.");
+      $("#vltAcc_server_ip").focus();
       return false;
     }
-    if($("#role_id").val()==""){
-      alert("역할 ID를 입력해주세요.");
-      $("#role_id").focus();
+    if($("#vltAcc_role_id").val()==""){
+      alert("Role ID를 입력해주세요.");
+      $("#vltAcc_role_id").focus();
       return false;
     }
-    if($("#secret_id").val()==""){
-      alert("시크릿 ID를 입력해주세요.");
-      $("#secret_id").focus();
+    if($("#vltAcc_secret_id").val()==""){
+      alert("Secret ID를 입력해주세요.");
+      $("#vltAcc_secret_id").focus();
       return false;
     }
     return true;
@@ -37,8 +45,69 @@
     }
   }
 
+  // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
+  function ajaxCallBtn(api_flag){
+    //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
+
+      if(!validationCheck()){
+        return;
+      }
+      // url 및 전송 parameter
+      var url = "/ajax_call_api";
+      var data = {'api_flag':api_flag, 'vault_ip_addr':$("#vltAcc_server_ip").val(), 'client_token':$("#vltAcc_client_token").val()};
+      //if($("#vltAcc_client_token").val()!=""){
+        //data = {'api_flag':api_flag, }
+      //}
+      data = JSON.stringify(data);
+
+      // request 셋팅
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST',url);
+      xhr.setRequestHeader('Content-Type', "application/json");
+      xhr.send(data);
+
+      // ajax 호출 리턴 후
+      xhr.addEventListener('load', function(){
+
+        var result = JSON.parse(xhr.responseText);
+        var strResult = "";
+        console.log("result:"+JSON.stringify(result));
+
+        if(result != null){ // 이거 수정해야함 result.rData 체크하는 걸로 -> home.js에서는 리턴값이 있을 때만 넘기는걸로
+          
+          if(api_flag=='vltAccInfo'){
+            // Vault 접속정보
+            $("#vltAcc_client_token").val(result.rData.auth.client_token);
+            $("#vltAcc_token_policies").val(result.rData.auth.token_policies);
+            $("#vltAcc_lease_duration").val(result.rData.auth.lease_duration);
+            
+            $("#vltDbCredInfo").attr('disabled',false);
+            $("#vltOtpCredInfo").attr('disabled',false);
+
+          } else if(api_flag=='vltDbCredInfo'){
+            // Vault DB Credit 정보
+            $("#vltDb_tmp_password").val(result.rData.data.password);
+            $("#vltDb_tmp_username").val(result.rData.data.username);
+
+          } else if(api_flag=='vltOtpCredInfo'){
+            // Vault OTP Credit 정보
+            $("#vltOtp_tmp_id").val(result.rData.data.ip);
+            $("#vltOtp_tmp_port").val(result.rData.data.port);
+            $("#vltOtp_tmp_key").val(result.rData.data.key);
+            $("#vltOtp_tmp_keyType").val(result.rData.data.key_type);
+            $("#vltOtp_tmp_username").val(result.rData.data.username);
+
+          }
+
+        } else {
+          alert("API CALL FAIL..");
+        }
+      });
+    }
   </script>
   <body>
+    <input type="hidden" name="hd_vault_server_ip" id="hd_vault_server_ip_1" value="<%=gData.VAULT_INFO[0].ip_address%>" />
+    <input type="hidden" name="hd_vault_server_ip" id="hd_vault_server_ip_2" value="<%=gData.VAULT_INFO[1].ip_address%>" />
     <div class="container-scroller">
       <!-- partial:partials/_sidebar.ejs -->
       <%- include('../partials/_sidebar') %>
@@ -69,7 +138,10 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Vault Server IP</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" style="background-color: whitesmoke;">
+                              <select class="form-control" style="background-color: whitesmoke;" id="vltAcc_server_ip">
+                                <option value="">------------- Choose a Server IP Address ------------</option>
+                              </select>
+                              <!--<input type="text" class="form-control" style="background-color: whitesmoke;">-->
                             </div>
                           </div>
                         </div>
@@ -77,7 +149,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Role ID</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" style="background-color: whitesmoke;">
+                              <input type="text" class="form-control" style="background-color: whitesmoke; color:black;" id="vltAcc_role_id">
                             </div>
                           </div>
                         </div>
@@ -87,7 +159,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Secret ID</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" style="background-color: whitesmoke;">
+                              <input type="text" class="form-control" style="background-color: whitesmoke; color:black;" id="vltAcc_secret_id">
                             </div>
                           </div>
                         </div>
@@ -97,27 +169,19 @@
                 </div>
               </div>
             </div>
-          
             <div class="row">
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
                     <form class="form-sample">
+                      <button type="button" id="vltAccInfo" onclick="ajaxCallBtn('vltAccInfo')" class="btn btn-warning btn-fw" style="float:right;">Vault 접속정보</button>
                       <p class="card-description"> Vault 접속정보 </p>
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-9">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Client_Token</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Token_Policies</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                            <label class="col-sm-2 col-form-label">Client_Token</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="vltAcc_client_token">
                             </div>
                           </div>
                         </div>
@@ -125,9 +189,17 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Token_Policies</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" id="vltAcc_token_policies">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Lease_Duration</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltAcc_lease_duration">
                             </div>
                           </div>
                         </div>
@@ -143,13 +215,14 @@
                 <div class="card">
                   <div class="card-body">
                     <form class="form-sample">
+                      <button type="button" id="vltDbCredInfo" onclick="ajaxCallBtn('vltDbCredInfo')" class="btn btn-warning btn-fw" style="float:right;" disabled>DB Credit 정보</button>
                       <p class="card-description"> DB 계정 - 휘발성(임시) 계정 </p>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Password</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltDb_tmp_password">
                             </div>
                           </div>
                         </div>
@@ -157,12 +230,12 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Username</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltDb_tmp_username">
                             </div>
                           </div>
                         </div>
                       </div>
-                      <p class="card-description"> DB 계정 - 기존 계정 비밀번호 변경 </p>
+                      <!--<p class="card-description"> DB 계정 - 기존 계정 비밀번호 변경 </p>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
@@ -208,14 +281,14 @@
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div>-->
                     </form>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="row">
+            <!--<div class="row">
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
@@ -253,28 +326,29 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
 
             <div class="row">
               <div class="col-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
                     <form class="form-sample">
+                      <button type="button" id="vltOtpCredInfo" onclick="ajaxCallBtn('vltOtpCredInfo')" class="btn btn-warning btn-fw" style="float:right;" disabled>OTP Credit 정보</button>
                       <p class="card-description"> SSH One Time Password </p>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">IP</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltOtp_tmp_id">
                             </div>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Key</label>
+                            <label class="col-sm-3 col-form-label">Port</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltOtp_tmp_port">
                             </div>
                           </div>
                         </div>
@@ -282,9 +356,9 @@
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Port</label>
+                            <label class="col-sm-3 col-form-label">Key</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltOtp_tmp_key">
                             </div>
                           </div>
                         </div>
@@ -292,7 +366,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Key_Type</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltOtp_tmp_keyType">
                             </div>
                           </div>
                         </div>
@@ -302,7 +376,7 @@
                           <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Username</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control">
+                              <input type="text" class="form-control" id="vltOtp_tmp_username">
                             </div>
                           </div>
                         </div>
@@ -327,4 +401,7 @@
     <!-- container-scroller -->
     <%- include('../partials/commonJs') %>
   </body>
+  <script>
+    vaultServerIpSetting();
+  </script>
 </html>
