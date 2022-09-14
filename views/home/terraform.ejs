@@ -148,10 +148,18 @@
 
         var result = JSON.parse(xhr.responseText);
         var strResult = "";
+        var errorCode = null;
+        if(result.errors!=null){
+          errorCode = result.errors.code;
+        }
         console.log("result:"+JSON.stringify(result));
 
-        if(result.rData.errors!=null){
-          alert(result.rData.errors);
+        if(errorCode!=null){
+          if(errorCode==28){
+            alert("Server's Connection Timeout.");
+          } else {
+            alert("ERROR OCCURED");
+          }
         } else {
 
           if(api_flag=='trrfrmRun'){

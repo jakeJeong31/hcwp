@@ -330,13 +330,20 @@
     // ajax 호출을 통해 home.js에서 Bash 명령어로 hashicorp API를 호출한다.
     function ajaxCallBtn(api_flag){
       //function aajaxCallBtn(url, data){ 추후 인자값 넘기는 함수로 변경
-  
+        
         if(!validationCheck()){
           return;
         }
+        // OS Type에 따른 curl 문법 변경
+        var osType = "";
+        if(navigator.userAgent.indexOf("Win")>0){
+          osType = "WIN";
+        } else {
+          osType = "LNX";
+        }
         // url 및 전송 parameter
         var url = "/ajax_call_api";
-        var data = {'api_flag':api_flag, 'vault_ip_addr':$("#vltAcc_server_ip").val(), 'client_token':$("#vltAcc_client_token").val()};
+        var data = {'api_flag':api_flag, 'vault_ip_addr':$("#vltAcc_server_ip").val(), 'client_token':$("#vltAcc_client_token").val(), 'os_type':osType};
         //if($("#vltAcc_client_token").val()!=""){
           //data = {'api_flag':api_flag, }
         //}
@@ -353,10 +360,18 @@
           
           var result = JSON.parse(xhr.responseText);
           var strResult = "";
+          var errorCode = null;
+          if(result.errors!=null){
+            errorCode = result.errors.code;
+          }
           console.log("result:"+JSON.stringify(result));
           
-          if(result.rData.errors!=null){
-            alert(result.rData.errors);
+          if(errorCode!=null){
+            if(errorCode==28){
+              alert("Server's Connection Timeout.");
+            } else {
+              alert("ERROR OCCURED");
+            }
           } else {
   
             if(api_flag=='vltAccInfo'){
