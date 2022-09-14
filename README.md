@@ -23,3 +23,5 @@
 
 4. FOREVER
 + forever start -c nodemon .
++ forever list
++ forever stop 0(no)
