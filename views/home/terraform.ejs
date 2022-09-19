@@ -141,6 +141,8 @@
       var xhr = new XMLHttpRequest();
       xhr.open('POST',url);
       xhr.setRequestHeader('Content-Type', "application/json");
+      xhr.timeout = 5000; // 5s
+      xhr.ontimeout = function () { alert("Timed Out."); }
       xhr.send(data);
 
       // ajax 호출 리턴 후
