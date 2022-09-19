@@ -75,11 +75,13 @@ router.post('/ajax_call_api', function(req, res){
   }
 
   api_exec = exec(api_addr, function (error, stdout, stderr){
-    //console.log('stdout: '+stdout+', stderr: '+stderr);
+    console.log('stdout: '+stdout+', stderr: '+stderr);
     if(error != null){
+      console.log("1111");
       //console.log('exec error: '+error);
       res.json({errors:error})
     } else {
+      console.log("2222");
       var rData = JSON.parse(stdout);
       res.json({rData:rData});
     }

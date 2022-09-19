@@ -162,6 +162,8 @@
           } else {
             alert("ERROR OCCURED");
           }
+        } else if (result.rData.errors!=null) { 
+          alert(result.rData.errors);
         } else {
 
           if(api_flag=='trrfrmRun'){
