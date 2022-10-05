@@ -73,6 +73,7 @@ router.post('/ajax_call_api', function(req, res){
   } else {
     console.log("api_flag is null");
   }
+   console.log("api_addr:"+api_addr);
 
   api_exec = exec(api_addr, function (error, stdout, stderr){
     console.log('stdout: '+stdout+', stderr: '+stderr);
