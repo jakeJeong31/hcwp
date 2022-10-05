@@ -37,7 +37,8 @@ router.post('/ajax_call_api', function(req, res){
   var vault_clientToken = req.body.client_token;
   var os_type = req.body.os_type;
   var api_exec = "";
-  
+  console.log("os_type:"+os_type);
+
   if(api_flag=="cslSrvcSttsInfo"){ // consul
     api_addr = 'curl -s http://'+myModule.CONSUL_INFO[0].ip_address+'/v1/health/node/'+myModule.CONSUL_INFO[0].node_name;
   } else if (api_flag=="cslSrvcSttsInfo_2nd"){
