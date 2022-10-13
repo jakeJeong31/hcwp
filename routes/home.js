@@ -52,24 +52,22 @@ router.post('/ajax_call_api', function(req, res){
     api_addr = 'curl -s --header "Authorization: Bearer $TEAM_TOKEN" https://app.terraform.io/api/v2/runs/run-UQJ55vGbhnhdyzXg';
   } else if (api_flag=='trrfrmWorkspace') {
     api_addr = 'curl -s --header "Authorization: Bearer '+myModule.TERRAFORM_INFO[0].team_token+'" https://app.terraform.io/api/v2/organizations/Insideinfo/workspaces';
+  } else if (api_flag=='vltGetRoleId') {
+    api_addr = 'curl -s --header "X-Vault-Token: '+myModule.VAULT_INFO[0].vault_token+'" http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/approle/role/my-role/role-id';
+  } else if (api_flag=='vltGetSecretId') {
+    api_addr = 'curl -s --header "X-Vault-Token: '+myModule.VAULT_INFO[0].vault_token+'" --request POST http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/approle/role/my-role/secret-id';
   } else if (api_flag=='vltAccInfo') {
-    if(os_type=="WIN"){
-      /* Window */
-      api_addr = 'curl --request POST --data \"{""password"": ""'+myModule.VAULT_INFO[0].usps_password+'""}\" http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/userpass/login/test';
-    } else {
-      /* Linux */
-      api_addr = 'curl --request POST --data \'{\"password\": \"'+myModule.VAULT_INFO[0].usps_password+'\"}\' http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/userpass/login/test';
-    }
+    /* Window */
+    api_addr = 'curl --request POST --data \"{""password"": ""'+myModule.VAULT_INFO[0].usps_password+'""}\" http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/userpass/login/test';
+    /* Linux */
+    //api_addr = 'curl --request POST --data \'{\"password\": \"'+myModule.VAULT_INFO[0].usps_password+'\"}\' http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/auth/userpass/login/test';
   } else if (api_flag=='vltDbCredInfo') {
     api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/database/creds/workshop-app';
   } else if (api_flag=='vltOtpCredInfo') {
-    if(os_type=="WIN"){
-      /* Window */
-      api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" --request POST --data \"{""ip"": ""'+vault_ip_addr+'""}\"  http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/ssh/creds/otp_key_role';
-    } else {
-      /* Linux */
-      api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" --request POST --data \'{\"ip\": \"'+vault_ip_addr+'\"}\'  http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/ssh/creds/otp_key_role';
-    }
+    /* Window */
+    api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" --request POST --data \"{""ip"": ""'+vault_ip_addr+'""}\"  http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/ssh/creds/otp_key_role';
+    /* Linux */
+    //api_addr = 'curl --header "X-Vault-Token:'+vault_clientToken+'" --request POST --data \'{\"ip\": \"'+vault_ip_addr+'\"}\'  http://'+vault_ip_addr+":"+myModule.VAULT_INFO[0].port+'/v1/ssh/creds/otp_key_role';
   } else {
     console.log("api_flag is null");
   }

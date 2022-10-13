@@ -45,21 +45,31 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-1">
                           <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Role ID</label>
-                            <div class="col-sm-9">
-                              <input type="text" class="form-control" style="background-color: whitesmoke; color:black;" id="vltAcc_role_id">
-                            </div>
+                            <button type="button" id="vltGetRoleId" onclick="ajaxCallBtn('vltGetRoleId')" class="btn btn-info" style="float:right;" >Get Role ID</button>
+                          </div>
+                        </div>
+                        <div class="col-md-1">
+                          <div class="form-group row">
+                            <button type="button" id="vltGetSecretId" onclick="ajaxCallBtn('vltGetSecretId')" class="btn btn-secondary btn-fw" style="float:right;" >Get Secret ID</button>
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-6">
                           <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Role ID</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" style="background-color: whitesmoke; color:black;" id="vltAcc_role_id" disabled >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Secret ID</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" style="background-color: whitesmoke; color:black;" id="vltAcc_secret_id">
+                              <input type="text" class="form-control" style="background-color: whitesmoke; color:black;" id="vltAcc_secret_id" disabled >
                             </div>
                           </div>
                         </div>
@@ -314,16 +324,7 @@
         $("#vltAcc_server_ip").focus();
         return false;
       }
-      if($("#vltAcc_role_id").val()==""){
-        alert("Role ID를 입력해주세요.");
-        $("#vltAcc_role_id").focus();
-        return false;
-      }
-      if($("#vltAcc_secret_id").val()==""){
-        alert("Secret ID를 입력해주세요.");
-        $("#vltAcc_secret_id").focus();
-        return false;
-      }
+      
       return true;
     }
   
@@ -344,9 +345,6 @@
         // url 및 전송 parameter
         var url = "/ajax_call_api";
         var data = {'api_flag':api_flag, 'vault_ip_addr':$("#vltAcc_server_ip").val(), 'client_token':$("#vltAcc_client_token").val(), 'os_type':osType};
-        //if($("#vltAcc_client_token").val()!=""){
-          //data = {'api_flag':api_flag, }
-        //}
         data = JSON.stringify(data);
   
         // request 셋팅
@@ -377,8 +375,12 @@
           } else if (result.rData.errors!=null) { 
             alert(result.rData.errors);
           } else {
-  
-            if(api_flag=='vltAccInfo'){
+            
+            if(api_flag=='vltGetRoleId'){
+              $("#vltAcc_role_id").val(result.rData.data.role_id);
+            } else if (api_flag=='vltGetSecretId'){
+              $("#vltAcc_secret_id").val(result.rData.data.secret_id);
+            } else if(api_flag=='vltAccInfo'){
               // Vault 접속정보
               $("#vltAcc_client_token").val(result.rData.auth.client_token);
               $("#vltAcc_token_policies").val(result.rData.auth.token_policies);
