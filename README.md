@@ -11,20 +11,21 @@
 + npm init --yes
 + npm install --global nodemon 
 + npm install --save ejs express body-parser method-override http express cors
-+ npm install --global forever : ref) unstable..
++ npm install pm2 -g
 
 2. GIT
 + git reset --hard HEAD^
 + git pull
 
 3. REF
-+ lsof -i tcp:3000
-+ kill -9 [PID]
++ lsof -i tcp:3000 (포트 사용 확인)
++ kill -9 [PID] (프로세스 강제주이)
 
-4. FOREVER
-+ forever start -c nodemon .
-+ forever list
-+ forever stop 0(no)
+4. PM2
++ pm2 start index.js (/hcwp 경로에서)
++ pm2 save (실행 후 상태 저장)
++ pm2 monit (모니터링)
++ pm2 stop 0 (중단)
 
 
 9. Bootstrap Theme
